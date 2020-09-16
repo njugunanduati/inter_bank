@@ -24,7 +24,7 @@ source venv/bin/activate
 ```
 Update the enviroment
 ```bash
-pi install --upgrade pip
+pip install --upgrade pip
 ```
 Install the required variables from the requirements.txt file 
 
