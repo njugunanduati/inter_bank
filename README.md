@@ -1,14 +1,29 @@
 # inter_bank
 
-Admin backend scripts is a python django application that provides an api for the content maps to allow them to replicate the objects through an api using a program variation code. 
+A simple application to try an simulate the shock that can be felt in a banking network when a few banks default on paying each other borrowed funds 
 
 ## Installation
 Clone the repository
 ```bash
-https://git-codecommit.us-west-2.amazonaws.com/v1/repos/admin_partner_account_apis
+git clone https://github.com/njugunanduati/inter_bank.git
 ```
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the application dependencies on that are on the requirements.txt file 
+cd into the folder
+```bash
+cd inter_bank
+```
+
+Create the python enviroment 
+```bash
+python3 -m venv venv
+```
+
+activate the enviroment
+ ```bash
+source venv/bin/activate
+```
+
+install the the requirements.txt file 
 
 ```bash
 pip install -r requirements.txt
