@@ -36,6 +36,15 @@ pip install -r requirements.txt
 
 ```bash
 python black_rhino.py
+
+
+# Pushing the code
+```bash
+git add .
+
+git commit -m "A statement of what you are pushing"
+
+git push -u origin master
 ```
 
 
