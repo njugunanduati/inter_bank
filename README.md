@@ -22,11 +22,20 @@ activate the enviroment
  ```bash
 source venv/bin/activate
 ```
-
-install the the requirements.txt file 
+Update the enviroment
+```bash
+pi install --upgrade pip
+```
+Install the required variables from the requirements.txt file 
 
 ```bash
 pip install -r requirements.txt
+```
+
+# Running the app
+
+```bash
+python black_rhino.py
 ```
 
 
