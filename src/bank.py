@@ -808,10 +808,10 @@ class Bank(object):
 		# LIABILITIES
 		#
 		
-		# banking capital
+		# Investment capital
 		value = 30.0
 		transaction = Transaction()
-		transaction.this_transaction("BC",  self.identifier,  self.identifier,  value,  0.0,  0, -1)
+		transaction.this_transaction("I",  self.identifier,  self.identifier,  value,  0.0,  0, -1)
 		self.accounts.append(transaction)
 		del transaction
 		
