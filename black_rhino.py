@@ -21,66 +21,68 @@ The development of this software has been supported by the ERA-Net
 on Complexity through the grant RESINEE.
 """
 
-#-------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 #
 #  MAIN
 #
-#-------------------------------------------------------------------------
+# -------------------------------------------------------------------------
+import logging
+import pdb
+import sys
+import networkx as nx
+
+sys.path.append('src/')
+
+from src.environment import Environment
+from src.runner import Runner
+from src.measurement import Measurement
+
+
 if __name__ == '__main__':
-	import pdb # python debugger, for debugging purposes only
-	
-	import sys
-	sys.path.append('src/')
-	import logging
-	import networkx as nx
-	
-	from environment import Environment
-	from runner import Runner
-	from measurement import Measurement
-	
-	args=['./black_rhino.py',  "environments/", "test10",  "log/",  "measurements/"]
-	#args = sys.argv
-	
-	if len(args) != 5:
-		print("Usage: ./black_rhino environment_directory/ environment_identifier log_directory/ measurement_directory/")
-		sys.exit()
 
+    args = ['./black_rhino.py', "environments/", "test10", "log/", "measurements/"]
+    # args = sys.argv
 
-#
-# INITIALIZATION
-#
-	environment_directory = str(args[1])
-	identifier = str(args[2])
-	log_directory = str(args[3])
-	measurement_directory = str(args[4])
+    if len(args) != 5:
+        print(
+            'Usage: ./black_rhino environment_directory/ environment_identifier log_directory/ measurement_directory/')
+        sys.exit()
 
-	# Configure logging parameters so we get output while the program runs
-	logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',  filename = log_directory + identifier + ".log", level=logging.INFO)
-	logging.info('START logging for run: %s',  environment_directory + identifier + ".xml")
+    #
+    # INITIALIZATION
+    #
+    environment_directory = str(args[1])
+    identifier = str(args[2])
+    log_directory = str(args[3])
+    measurement_directory = str(args[4])
 
-	environment = Environment()
-	environment.initialize(environment_directory,  identifier)
-	runner = Runner()
-	measurement = Measurement()
+    # Configure logging parameters so we get output while the program runs
+    logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S',
+                        filename=log_directory + identifier + ".log", level=logging.INFO)
+    logging.info('START logging for run: %s', environment_directory + identifier + ".xml")
 
+    environment = Environment()
+    environment.initialize(environment_directory, identifier)
+    runner = Runner()
+    measurement = Measurement()
 
-#
-# UPDATE STEP
-#
-	for i in range(environment.parameters.numSimulations):
-		logging.info('  STARTED with run %s',  str(i))
-		environment.initialize(environment_directory,  identifier)
-		runner.initialize(environment)
-		measurement.initialize() # clear the previous measurement
-		
-		# do the run
-		runner.do_run(measurement,  "info")
-		# do the histograms, i.e. add the current measurement to the histogram
-		measurement.do_histograms()
-		logging.info('  DONE')
+    #
+    # UPDATE STEP
+    #
+    for i in range(environment.parameters.numSimulations):
+        logging.info('  STARTED with run %s', str(i))
+        environment.initialize(environment_directory, identifier)
+        runner.initialize(environment)
+        measurement.initialize()  # clear the previous measurement
 
-#
-# MEASUREMENT AND LOGGING
-#
-	measurement.write_histograms(measurement_directory,  environment)
-	logging.info('FINISHED logging for run: %s \n', environment_directory + identifier + ".xml")
+        # do the run
+        runner.do_run(measurement, "info")
+        # do the histograms, i.e. add the current measurement to the histogram
+        measurement.do_histograms()
+        logging.info('  DONE')
+
+    #
+    # MEASUREMENT AND LOGGING
+    #
+    measurement.write_histograms(measurement_directory, environment)
+    logging.info('FINISHED logging for run: %s \n', environment_directory + identifier + ".xml")

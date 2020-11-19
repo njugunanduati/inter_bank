@@ -18,11 +18,20 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
+import os
 import logging
+import os
+from .bank import Bank
+from .environment import Environment # needed for the bankDirectory
 
 #-------------------------------------------------------------------------
 #  class Tests
 #-------------------------------------------------------------------------
+from .measurement import Measurement
+from .runner import Runner
+from .updater import Updater
+
+
 class Tests(object):
 	#
 	# VARIABLES
@@ -45,9 +54,9 @@ class Tests(object):
 	# print_info(text)
 	#-------------------------------------------------------------------------
 	def print_info(self, text):
-		print '##############################################################################'
-		print text
-		print '##############################################################################'
+		print('##############################################################################')
+		print(text)
+		print('##############################################################################')
 	#-------------------------------------------------------------------------
 
 
@@ -57,9 +66,6 @@ class Tests(object):
 	#-------------------------------------------------------------------------
 	
 	def bank__initialize_standard_bank(self, args):
-		import os
-		from bank import Bank
-		from environment import Environment # needed for the bankDirectory
 		
 		text = "This test checks bank.initialize_standard_bank() \n"
 		text += "  It is successfull if a standart Bank with 2 asstets (I = 100),\n"
@@ -92,7 +98,7 @@ class Tests(object):
 		# generate the bank
 		bank = Bank()
 		bank.initialize_standard_bank()      
-		print bank
+		print(bank)
 	#-------------------------------------------------------------------------
 
 
@@ -104,9 +110,6 @@ class Tests(object):
 	#
 	#-------------------------------------------------------------------------
 	def bank__update_maturity(self, args):
-		import os
-		from bank import Bank
-		from environment import Environment # needed for the bankDirectory
 		
 		text = "This test checks bank.update_maturity() \n"
 		text += "  It is successfull if the maturity of all transactions is reduced by one \n"
@@ -141,9 +144,9 @@ class Tests(object):
 		#
 		# TEST CODE
 		#
-		print bank
+		print(bank)
 		bank.update_maturity()
-		print bank
+		print(bank)
 		#-------------------------------------------------------------------------
 
 
@@ -155,9 +158,6 @@ class Tests(object):
 	#
 	#-------------------------------------------------------------------------
 	def bank__get_interest(self, args):
-		import os
-		from bank import Bank
-		from environment import Environment # needed for the bankDirectory
 		
 		text = "This test checks bank.get_interest() \n"
 		text += "  It is successfull if the volume of all accounts has increased \n"
@@ -195,13 +195,13 @@ class Tests(object):
 		interestCalculated = 0.0
 		interestAssets = 0.0
 		interestLiabilities = 0.0
-		print "Bank:"
-		print bank
+		print(f'Bank: {bank} Transactions')
 		
-		print "Transactions:"
+		print("Transactions:")
 		for transaction in bank.accounts:
-			print transaction.transactionType, transaction.transactionValue, transaction.transactionInterest
-			if (transaction.transactionType == "I" or transaction.transactionType == "E" or transaction.transactionType == "rD"): # we have an asset
+			print(transaction.transactionType, transaction.transactionValue, transaction.transactionInterest)
+			if transaction.transactionType == "I" or transaction.transactionType == "E"\
+					or transaction.transactionType == "rD": # we have an asset
 				interestAssets += transaction.transactionValue*transaction.transactionInterest
 			else: # we have a liability
 				interestLiabilities -= transaction.transactionValue*transaction.transactionInterest
@@ -209,7 +209,7 @@ class Tests(object):
 		for type in ["I",  "E",  "D",  "rD",  "LC",  "L",  "BC"]:
 			interestCalculated += bank.get_interest(type)
 			
-		print "Interest: " + str(interestCalculated)+ " = " + str(interestAssets) + " + "  + str(interestLiabilities)
+		print(f'Interest: {str(interestCalculated)} = {str(interestAssets)} {str(interestLiabilities)}')
 		#print transaction.transactionType, transaction.transactionValue, transaction.transactionInterest
 		#-------------------------------------------------------------------------
 
@@ -218,7 +218,6 @@ class Tests(object):
 	# bank__test1()
 	#-------------------------------------------------------------------------
 	def bank__test1(self, args):
-		from environment import Environment
 				
 		#
 		# INITIALIZATION
@@ -239,8 +238,8 @@ class Tests(object):
 		environment.initialize(environment_directory,  identifier)
 		
 		#for bank in environment.banks:
-		print environment.banks[2]
-		print environment.network
+		print(environment.banks[2])
+		print(environment.network)
 		
 		
 		#
@@ -254,8 +253,6 @@ class Tests(object):
 	# test_updater1()
 	#-------------------------------------------------------------------------
 	def updater__updater1(self, args):
-		from environment import Environment
-		from updater import Updater
 		
 		#
 		# INITIALIZATION
@@ -276,9 +273,9 @@ class Tests(object):
 		environment.initialize(environment_directory,  identifier)
 		# create a test environment with standardised banks
 		
-		print environment.banks[0]
-		print environment.banks[1]
-		print environment.banks[2]
+		print(environment.banks[0])
+		print(environment.banks[1])
+		print(environment.banks[2])
 		
 		updater = Updater(environment)
 		
@@ -287,9 +284,9 @@ class Tests(object):
 		#
 		updater.do_update_phase1(environment.get_state(0),  environment.network, environment.network.contracts.nodes(), 0, "info")
 		
-		print environment.banks[0]
-		print environment.banks[1]
-		print environment.banks[2]
+		print(environment.banks[0])
+		print(environment.banks[1])
+		print(environment.banks[2])
 		
 		#
 		# MEASUREMENT AND LOGGING
@@ -302,8 +299,6 @@ class Tests(object):
 	# network__remove_inactive_bank()
 	#-------------------------------------------------------------------------
 	def network__remove_inactive_bank(self, args):
-		from environment import Environment
-		from updater import Updater
 		
 		#
 		# INITIALIZATION
@@ -331,7 +326,7 @@ class Tests(object):
 		environment.banks[1].Lp = -1.0
 		environment.banks[2].Lp = -1.0
 		environment.network.do_interbank_trades(environment.get_state(0))
-		print environment.network
+		print(environment.network)
 		
 		updater = Updater(environment)
 		
@@ -345,7 +340,7 @@ class Tests(object):
 		#print environment.banks[0]
 		#print environment.banks[1]
 		#print environment.banks[2]
-		print environment.network
+		print(environment.network)
 		
 		#
 		# MEASUREMENT AND LOGGING
@@ -358,9 +353,6 @@ class Tests(object):
 	# network__do_interbank_trades(args)
 	#-------------------------------------------------------------------------
 	def network__do_interbank_trades(self, args):
-		from environment import Environment
-		from updater import Updater
-		
 		#
 		# INITIALIZATION
 		#
@@ -382,17 +374,17 @@ class Tests(object):
 		#print environment.banks[0]
 		#print environment.banks[1]
 		#print environment.banks[2]
-		print environment.network
+		print(environment.network)
 		environment.banks[0].Lp = 2.0
 		environment.banks[1].Lp = -1.0
 		environment.banks[2].Lp = -1.0
 		environment.network.do_interbank_trades(environment.get_state(0))
-		print environment.network
+		print(environment.network)
 		environment.banks[0].Lp = 2.3
 		environment.banks[1].Lp = -1.1
 		environment.banks[2].Lp = -1.2
 		environment.network.do_interbank_trades(environment.get_state(0))
-		print environment.network
+		print(environment.network)
 		
 		#print environment.banks[0]
 		#print environment.banks[1]
@@ -409,9 +401,7 @@ class Tests(object):
 	# test_updater2()
 	#-------------------------------------------------------------------------
 	def updater__updater2(self, args):
-		from environment import Environment
-		from updater import Updater
-		
+
 		#
 		# INITIALIZATION
 		#
@@ -450,8 +440,6 @@ class Tests(object):
 	# liquidate_assets()
 	#-------------------------------------------------------------------------
 	def updater__liquidate_assets(self, args):
-		from environment import Environment
-		from updater import Updater
 		
 		#
 		# INITIALIZATION
@@ -471,7 +459,7 @@ class Tests(object):
 		environment = Environment(environment_directory,  identifier)
 		# create a test environment with standardised banks
 		
-		print environment.banks[0]
+		print(environment.banks[0])
 		#print environment.banks[1]
 		#print environment.banks[2]
 		
@@ -484,7 +472,7 @@ class Tests(object):
 		updater.do_update_phase1(environment, 0, "debug")
 		updater.do_update_phase2(environment, 0, "info")
 		
-		print environment.banks[0]
+		print(environment.banks[0])
 		#print environment.banks[1]
 		#print environment.banks[2]
 		
@@ -499,13 +487,6 @@ class Tests(object):
 	# test_fire_sales
 	#-------------------------------------------------------------------------
 	def test_fire_sales(self, args): # TODO not consistent with other test names
-		import logging
-		import networkx as nx
-		
-		from environment import Environment
-		from runner import Runner
-		from measurement import Measurement
-		
 		#
 		# INITIALIZATION
 		#
@@ -550,9 +531,6 @@ class Tests(object):
 	# test_state()
 	#-------------------------------------------------------------------------
 	def test_state(self, args):
-		from environment import Environment
-		from updater import Updater
-		
 		#
 		# INITIALIZATION
 		#
@@ -573,10 +551,10 @@ class Tests(object):
 		# create a test environment with standardised banks
 		
 		#
-		print environment.get_state(0)
+		print(environment.get_state(0))
 		environment.banks[0].reduce_banking_capital(10.0)
 		environment.banks[0].check_solvency(environment.get_state(0),  "info",  0)
-		print environment.get_state(1)
+		print(environment.get_state(1))
 		
 		#
 		# MEASUREMENT AND LOGGING
@@ -589,9 +567,6 @@ class Tests(object):
 	# bank__update_risk_aversion()
 	#-------------------------------------------------------------------------
 	def bank__update_risk_aversion(self, args):
-		from environment import Environment
-		from updater import Updater
-		
 		#
 		# INITIALIZATION
 		#
@@ -614,14 +589,14 @@ class Tests(object):
 		# first test: a bank in t=0 defaults, check that risk aversion in t=1 increases
 		environment.banks[0].reduce_banking_capital(10.0)
 		environment.banks[0].check_solvency(environment.get_state(0),  "info",  0)
-		print environment.get_state(0)
+		print(environment.get_state(0))
 		environment.banks[1].update_risk_aversion(environment.get_state(1), 1)
-		print environment.banks[1]
+		print(environment.banks[1])
 		# second test: check that risk aversion in t=2 decreases
 		environment.banks[1].update_risk_aversion(environment.get_state(2), 2)
-		print environment.banks[1]
+		print(environment.banks[1])
 		environment.banks[1].update_risk_aversion(environment.get_state(3), 3)
-		print environment.banks[1]
+		print(environment.banks[1])
 		
 		#
 		# MEASUREMENT AND LOGGING
@@ -634,8 +609,6 @@ class Tests(object):
 	# bank__update_risk_aversion()
 	#-------------------------------------------------------------------------
 	def bank__calculate_optimal_investment_volume(self, args):
-		from environment import Environment
-		from updater import Updater
 		
 		#
 		# INITIALIZATION
@@ -659,9 +632,9 @@ class Tests(object):
 		# test 1: send a bank into default, update the risk aversion of the other banks
 		environment.banks[0].reduce_banking_capital(10.0)
 		environment.banks[0].check_solvency(environment.get_state(0),  "info",  0)
-		print environment.get_state(0)
+		print(environment.get_state(0))
 		environment.banks[1].update_risk_aversion(environment.get_state(1), 1)
-		print environment.banks[1]
+		print(environment.banks[1])
 		environment.banks[1].calculate_optimal_investment_volume(environment.get_state(0))
 		
 		#

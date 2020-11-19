@@ -22,7 +22,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #  class Updater
 #-------------------------------------------------------------------------
 class Updater(object):
-#	from environment import Environment
 
 	#
 	# VARIABLES
