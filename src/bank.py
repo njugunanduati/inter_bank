@@ -31,8 +31,6 @@ random = Random()
 # class Bank
 #
 # ============================================================================
-
-
 class Bank(object):
     #
     #
@@ -246,9 +244,6 @@ class Bank(object):
     # get_interest
     # -------------------------------------------------------------------------
     def get_interest(self, type):
-        from random import Random
-
-        random = Random()
         volume = 0.0
         sign = 1.0  # will be negative if interest has to be paid by the bank
 
@@ -297,8 +292,6 @@ class Bank(object):
     # This method returns the NET flow of deposits, not the absolute value
     # -------------------------------------------------------------------------
     def get_new_deposits(self, scaleFactor):
-        from random import Random
-        random = Random()
         oldValue = 0.0
         newValue = 0.0
         returnValue = 0.0
@@ -845,5 +838,4 @@ class Bank(object):
         transaction.this_transaction("LC", -3, self.identifier, value, self.rb, 0, -1)
         self.accounts.append(transaction)
         del transaction
-
-# -------------------------------------------------------------------------
+    #-------------------------------------------------------------------------

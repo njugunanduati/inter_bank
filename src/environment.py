@@ -65,7 +65,7 @@ class Environment(object):
 
         # then read in all the banks
         if (self.parameters.bankDirectory != ""):
-            print("oooo", self.parameters.bankDirectory)
+            # print("oooo", self.parameters.bankDirectory)
             if (self.parameters.bankDirectory != "none"):  # none is used for tests only
                 self.initialize_banks_from_files(self.parameters.bankDirectory, self.get_state(0), 0)
                 logging.info("  banks read from directory: %s", self.parameters.bankDirectory)
@@ -175,7 +175,7 @@ class Environment(object):
             # print("infile", infile)
             bank = Bank()
             bank.get_parameters_from_file(bankDirectory + infile, self.get_state(0), self.parameters.numBanks, time)
-            print("bank", bank)
+            # print("bank", bank)
             self.banks.append(bank)
             bank.__del__()  # TODO not sure if this is really safe, but it is better than doing nothing about all those created instances...
 

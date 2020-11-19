@@ -24,7 +24,7 @@ source venv/bin/activate
 ```
 Update the enviroment
 ```bash
-pi install --upgrade pip
+pip install --upgrade pip
 ```
 Install the required variables from the requirements.txt file 
 
@@ -36,6 +36,15 @@ pip install -r requirements.txt
 
 ```bash
 python black_rhino.py
+
+
+# Pushing the code
+```bash
+git add .
+
+git commit -m "A statement of what you are pushing"
+
+git push -u origin master
 ```
 
 

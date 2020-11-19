@@ -97,7 +97,7 @@ class Tests(object):
 		# TEST CODE
 		# generate the bank
 		bank = Bank()
-		bank.initialize_standard_bank()      
+		bank.initialize_standard_bank()
 		print(bank)
 	#-------------------------------------------------------------------------
 
@@ -202,13 +202,14 @@ class Tests(object):
 			print(transaction.transactionType, transaction.transactionValue, transaction.transactionInterest)
 			if transaction.transactionType == "I" or transaction.transactionType == "E"\
 					or transaction.transactionType == "rD": # we have an asset
+
 				interestAssets += transaction.transactionValue*transaction.transactionInterest
 			else: # we have a liability
 				interestLiabilities -= transaction.transactionValue*transaction.transactionInterest
 		
 		for type in ["I",  "E",  "D",  "rD",  "LC",  "L",  "BC"]:
 			interestCalculated += bank.get_interest(type)
-			
+
 		print(f'Interest: {str(interestCalculated)} = {str(interestAssets)} {str(interestLiabilities)}')
 		#print transaction.transactionType, transaction.transactionValue, transaction.transactionInterest
 		#-------------------------------------------------------------------------
@@ -272,7 +273,7 @@ class Tests(object):
 		environment = Environment()
 		environment.initialize(environment_directory,  identifier)
 		# create a test environment with standardised banks
-		
+
 		print(environment.banks[0])
 		print(environment.banks[1])
 		print(environment.banks[2])
@@ -283,7 +284,7 @@ class Tests(object):
 		# execute the update code
 		#
 		updater.do_update_phase1(environment.get_state(0),  environment.network, environment.network.contracts.nodes(), 0, "info")
-		
+
 		print(environment.banks[0])
 		print(environment.banks[1])
 		print(environment.banks[2])
@@ -380,6 +381,7 @@ class Tests(object):
 		environment.banks[2].Lp = -1.0
 		environment.network.do_interbank_trades(environment.get_state(0))
 		print(environment.network)
+
 		environment.banks[0].Lp = 2.3
 		environment.banks[1].Lp = -1.1
 		environment.banks[2].Lp = -1.2
@@ -458,8 +460,9 @@ class Tests(object):
 		#
 		environment = Environment(environment_directory,  identifier)
 		# create a test environment with standardised banks
-		
+
 		print(environment.banks[0])
+
 		#print environment.banks[1]
 		#print environment.banks[2]
 		
@@ -471,8 +474,9 @@ class Tests(object):
 		#
 		updater.do_update_phase1(environment, 0, "debug")
 		updater.do_update_phase2(environment, 0, "info")
-		
+
 		print(environment.banks[0])
+
 		#print environment.banks[1]
 		#print environment.banks[2]
 		
@@ -589,6 +593,7 @@ class Tests(object):
 		# first test: a bank in t=0 defaults, check that risk aversion in t=1 increases
 		environment.banks[0].reduce_banking_capital(10.0)
 		environment.banks[0].check_solvency(environment.get_state(0),  "info",  0)
+
 		print(environment.get_state(0))
 		environment.banks[1].update_risk_aversion(environment.get_state(1), 1)
 		print(environment.banks[1])
@@ -635,6 +640,7 @@ class Tests(object):
 		print(environment.get_state(0))
 		environment.banks[1].update_risk_aversion(environment.get_state(1), 1)
 		print(environment.banks[1])
+
 		environment.banks[1].calculate_optimal_investment_volume(environment.get_state(0))
 		
 		#
