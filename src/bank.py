@@ -155,9 +155,9 @@ class Bank(object):
                             self.xi = float(value)
                         if name == 'thetaBank':
                             self.theta = float(value)
-                        if name == 'pReal':  # success probability of real assets TODO change stupid name
+                        if name == 'pBank':  # success probability of real assets TODO change stupid name
                             self.pReal = float(value)
-                        if name == 'rhoReal':  # return of real assets TODO change stupid name
+                        if name == 'rhoBank':  # return of real assets TODO change stupid name
                             self.rhoReal = float(value)
                         if name == 'pFinancial':  # success probability of financial assets
                             self.pFinancial = float(value)
@@ -504,7 +504,7 @@ class Bank(object):
 
             # and add transaction to the stack
             transaction = Transaction()
-            transaction.this_transaction("I", self.identifier, -2, self.averageTransactionSize, self.rho, maturity,
+            transaction.this_transaction("I", self.identifier, -2, self.averageTransactionSize, self.rhoReal, maturity,
                                          timeOfDefault)
             self.accounts.append(transaction)
             del transaction
@@ -526,7 +526,7 @@ class Bank(object):
                 timeOfDefault = -1
 
             transaction = Transaction()
-            transaction.this_transaction("I", self.identifier, -2, transactionVolume, self.rho, maturity, timeOfDefault)
+            transaction.this_transaction("I", self.identifier, -2, transactionVolume, self.rhoReal, maturity, timeOfDefault)
             self.accounts.append(transaction)
             del transaction
 
@@ -564,12 +564,14 @@ class Bank(object):
         # we can also include memory effects when agents "forget" past defaults
         # for the interbank assets, life is even more interesting when agents now about recent defaults
         mu = self.pReal * self.rhoReal - (1.0 - self.pReal)
+
         sigma_2 = self.pReal * (self.rhoReal - mu) * (self.rhoReal - mu) + (1 - self.pReal) * ((-1 - mu) * (-1 - mu))
 
         if sigma_2 > 0.0:  # this test ensures there are no floating errors from division by zero
             # TODO here we have to impose regulatory measures on the portfolio structure in a VaR sense
             self.lamb = max(0.0, min((mu / (self.theta * sigma_2)),
                                      1.0))  # lamb is the fraction of risky assets in the portfolio
+
             self.V = math.pow(
                 self.xi * (1.0 / self.rb) * pow((1.0 + self.lamb * mu - 0.5 * self.lamb * self.lamb * sigma_2),
                                                 (1.0 - self.theta)), (1.0 / self.theta))
@@ -583,7 +585,7 @@ class Bank(object):
         else:
             self.lamb = 0.0
             self.V = 0.0
-
+            print("Volume:", self.V)
     # -------------------------------------------------------------------------
 
     # -------------------------------------------------------------------------
@@ -600,13 +602,12 @@ class Bank(object):
             logging.info("  ERROR: number of  assets in the economy has to be at least half the number of banks")
         # now, calculate value of each transaction and note that the *product* of all individual transactions
         # is supposed to have precision 4. Hence, each individual transaction should have precision 5
-        # value = round(float(self.gamma * self.lamb * self.V / numTransactions), 5)
-        value = random.randint(10, 20)
-        # print("value----", value)
+        value = round(float(self.gamma * self.lamb * self.V / numTransactions), 5)
+
 
         # finally, put them on the transaction stack
         for i in range(numTransactions):
-            # print('i', i)
+
             transaction = Transaction()
             #
             # account for different maturities
@@ -661,6 +662,7 @@ class Bank(object):
             "D") - self.get_account("BC")), 4)
         transaction = Transaction()
         transaction.this_transaction("LC", self.identifier, -3, value, self.rb, 0, -1)
+        print(transaction.print_transaction())
         self.accounts.append(transaction)
         del transaction
 

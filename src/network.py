@@ -21,7 +21,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import networkx as nx
 import logging
 import random
-import numpy as np
+
 
 
 # -------------------------------------------------------------------------
